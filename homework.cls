@@ -28,8 +28,8 @@
 \DeclareBoolOption{bib} % Print an MLA bibliography from references.bib
 
 % Options for paper style
-\newcommand{\@formatType}{stem}
-\DeclareVoidOption{stem}{\renewcommand{\@formatType}{stem}}
+\newcommand{\@formatType}{pset}
+\DeclareVoidOption{pset}{\renewcommand{\@formatType}{pset}}
 \DeclareVoidOption{mla}{\renewcommand{\@formatType}{mla}}
 
 \ProcessKeyvalOptions*
@@ -142,7 +142,7 @@
 \usemintedstyle{tango}
 
 % Fonts
-\ifdefstring{\@formatType}{stem}
+\ifdefstring{\@formatType}{pset}
 {
 	\setmainfont{CMU Serif}
 }{
@@ -170,7 +170,7 @@
 }{}
 
 % Title
-\ifdefstring{\@formatType}{stem}
+\ifdefstring{\@formatType}{pset}
 {
 	\if@titlepage
 		\renewcommand{\maketitle}
