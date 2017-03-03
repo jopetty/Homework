@@ -85,7 +85,6 @@ You can use the template.tex as a starting point for your own homework assignmen
 | `\name{}`       | Your name. This will appear at the beginning of each document and, if in `mla` mode, automatically extract your last name for the header. | `YOUR NAME`   |
 | `\teacher{}`    | Your teacher's name. This is not used in `pset` mode. | `TEACHER`     |
 | `\course{}`     | The name of the class or course          | `COURSE`      |
-| `\class{}`      | See above                                |               |
 | `\due{}`        | When the assignment is due               | `\today`      |
 | `\assignment{}` | The title of the assignment              | `ASSIGNMENT`  |
 
