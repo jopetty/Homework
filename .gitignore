@@ -181,3 +181,6 @@ TSWLatexianTemp*
 
 # macOS
 *.DS_Store
+
+# Editors
+*vscode*
