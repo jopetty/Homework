@@ -1,0 +1,27 @@
+\documentclass{homework}
+
+\name{Your Name}
+\course{MATH 211}
+\assignment{Pset \#1}
+
+\begin{document}
+	
+\begin{problem}
+	Show that $\sqrt{2}$ is irrational.
+\end{problem}
+\begin{solution}
+	Assume that $\sqrt{2}$ is even. It can therefore be expressed as a rational fraction of the form $\frac{a}{b}$, where $a$ and $b$ are relatively prime integers. It follows that $\frac{a^2}{b^2} = 2$, and therefore that $a^2 = 2b^2$, so $a^2$ and $a$ are even. Now let $a$ be expressed as $2c$. This shows that $b^2 = 2c^2$, and thus that both $b^2$ and $b$ are even. However, two relatively prime integers cannot both be even, as they share a common factor of 2. Therefore, $\sqrt{2}$ must be irrational. 
+\end{solution}
+
+\begin{problem}[Extra Note Goes Here]
+	Show that there are infinitely many primes.
+\end{problem}
+\begin{solution}
+	Let $\mathbb{U}$ be the finite set of all primes $\qty{p_1, p_2, p_3, \dots p_n}$. Let
+	\[
+		N = \prod \mathbb{U} + 1 = p_1p_2p_3\cdots p_n + 1\text{.}
+	\]
+	$N$ is not divisible by any element of $\mathbb{U}$ since it will necessarily have a remainder of 1. Therefore, $N$ must be divisible by some prime $p \not\in \mathbb{U}$. Thus, for every finite set of prime numbers $\mathbb{U}$, there will always exist some prime $p$ which is not an element of $\mathbb{U}$, and therefore there are infinitely many primes.
+\end{solution}
+
+\end{document}
