@@ -3,7 +3,7 @@
 
 % CLASS IDENTIFICATION
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{homework}[2017/03/01 v0.1 A LaTeX class for typesetting homework assignments]
+\ProvidesClass{homework}[2017/03/01 v1.1 A LaTeX class for typesetting homework assignments]
 
 %%%%%%%%%%%%%%%%%%%%%%%%%
 %%% CLASS DECLARATION %%%
@@ -13,6 +13,7 @@
 % Class Programming
 \RequirePackage{kvoptions}
 \RequirePackage{etoolbox}
+\RequirePackage{xparse}
 
 % EVALUATE OPTIONS
 \SetupKeyvalOptions{
@@ -22,6 +23,7 @@
 
 \DeclareBoolOption{qed} % Display QED symbol at the end of each Solution
 \DeclareBoolOption{newpage} % Put each Problem on a new page
+\DeclareBoolOption{points} % Show points for each Problem
 \DeclareBoolOption{hidesolutions} % Only display Problem
 \DeclareBoolOption{noboxes} % Remove boxes around Problem
 \DeclareBoolOption{grid} % Show background grid
@@ -66,6 +68,9 @@
 \RequirePackage{amsthm}
 \RequirePackage{mathtools}
 
+% Chemistry
+\RequirePackage{mhchem}
+
 % Diagrams
 \RequirePackage{tikz}
 \RequirePackage[american, siunitx]{circuitikz}
@@ -77,9 +82,9 @@
 
 % Formatting
 \RequirePackage{framed}
+\RequirePackage{enumitem}
 \RequirePackage[pass]{geometry}
 \RequirePackage{fancyhdr}
-\RequirePackage{enumitem}
 
 % CLASS VARIABLES
 \newcommand{\getlastpart}[2]{\@getlastpart#1#2 \@nil}
@@ -270,7 +275,7 @@
 	\fi
 }{}
 
-% Problem Environment
+%% Problem Environment
 \newcounter{@problemNumber}
 \theoremstyle{definition}
 \newtheorem{@problem}{\@problemLabel}
@@ -284,7 +289,18 @@
 		\fi
 	\fi
 	\notbool{HW@noboxes}{\framed\vspace{-1.5ex}}{}
-	\@problem[#1]
+	\ifHW@points
+		\@problem
+		\def\temp{#1}\ifx\temp\empty\else
+			\ifnum#1=1
+				\textit{(#1 \@pointLabel)}
+			\else
+				\textit{(#1 \@pointsLabel)}
+			\fi
+		\fi
+	\else
+		\@problem[#1]
+	\fi
 	\pdfbookmark{\@problemLabel\ \arabic{@problem}}{prob-\arabic{@problem}}
 }
 {
@@ -292,12 +308,14 @@
 	\notbool{HW@noboxes}{\vspace{-1.5ex}\endframed}{}
 }
 
+% Use a custom problem number
 \newcommand{\problemnumber}[1]%
 {
 	\setcounter{@problem}{#1}
 	\addtocounter{@problem}{-1}
 }
 
+%% Solution
 \newcommand{\@solutionTitleFormat}{\normalfont\bfseries}
 \ifHW@hidesolutions
 	\RequirePackage{comment}
@@ -312,10 +330,11 @@
 	}
 \fi
 
-% Parts
+%% Parts
 \newcommand{\@partLabelDefault}{\textup{(\alph*)}}
 \newcommand{\@partLabel}{}
 
+%% Define parts environment option actions
 \@namedef{partLabel@a}{\renewcommand{\@partLabel}{\textup{(\alph*)}}}
 \@namedef{partLabel@A}{\renewcommand{\@partLabel}{\textup{(\Alph*)}}}
 \@namedef{partLabel@r}{\renewcommand{\@partLabel}{\textup{(\roman*)}}}
@@ -347,8 +366,15 @@
 {
   \endenumerate
 }
-\renewcommand{\part}{\item}
+
+%% \part %%
+%% Define an optional argument \part[<label>]
+%% Shorthand for \item\label{<label>}
+\def\part{\@ifnextchar[{\@with}{\@without}}
+\def\@with[#1]{\item\label{#1}}
+\def\@without{\item}
+
 \newcommand{\unresume}{\setcounter{enumi}{0}}
 
-% Final
+%% Final
 \newcommand{\final}[1]{\boxed{#1}}

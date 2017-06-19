@@ -8,7 +8,7 @@ There's no shortage of homework *TeX classes, but this class is designed to be:
 - **Easy To Use**: Writing in LaTeX is already hard enough without having to worry about custom requirements for a class. With this in mind, `homework` tries to abstract away much of the custom configuration required for different use cases, instead providing class options to customize each document while minimizing the extra code that must be written.
 - **Semantically Coded**: Along with providing functionality for common parts of a generic homework assignment, `homework` attempts to add meaning to each custom command to improve readability — for example, instead of `\boxedanswer{}`, it makes more sense to call the command what it is: `\final{}`.
 - **Unicode Compatible**: Unicode support in LaTeX is, in general, a mess. While there exist a variety of work arounds to support accented Latin characters (`\"{}`, `\'{}`, `\^{}`, etc.), this is an inelegant solution for a couple of reasons: first, it hampers the readability of the document (it's much easier to read/copy/paste `Paul Erdős` than it is `Paul Erd\H{o}s`). Second, it completely ignores the problem of writing in languages which do not use the Latin script, like Greek or Russian. This necessitates the loading of other packages (`babel`, `polyglossia`), each of which come with their own complexity and have the propensity to break the document if package conflict arrises. Instead, `homework` opts for a much nicer solution: to use `XeLaTeX` to allow for fully Unicode-Compatible source documents.
-- **Flexible**: Not every homework assignment is a problem set, but many existing homework classes provide only a single format for documents. While this can be avoided by using more than one document class and choosing the appropriate one for the assignment at hand, this introduces uneeded complexity. Plus, wouldn't it be nice to still have access to all the same commands, even if the end result was an essay instead of a lab report? `homework` provides the `pset` (default) and `mla` formats, allowing you to switch between a standard problem set and an MLA formatted essay, inluding a properly formatted Works Cited page.
+- **Flexible**: Not every homework assignment is a problem set, but many existing homework classes provide only a single format for documents. While this can be avoided by using more than one document class and choosing the appropriate one for the assignment at hand, this introduces unneeded complexity. Plus, wouldn't it be nice to still have access to all the same commands, even if the end result was an essay instead of a lab report? `homework` provides the `pset` (default) and `mla` formats, allowing you to switch between a standard problem set and an MLA formatted essay, including a properly formatted Works Cited page.
 
 ## Documentation
 
@@ -16,7 +16,7 @@ There's no shortage of homework *TeX classes, but this class is designed to be:
 
 To use `homework`, you must have the following installed on your system:
 
-- `XeLaTeX` 
+- `XeLaTeX`
 - `Python`
 - The `pygments` Python package
 - CMU & Times New Roman fonts
@@ -65,7 +65,7 @@ You can use the template.tex as a starting point for your own homework assignmen
 #### Formats
 
 - `pset`: This is the default format provided by the class; it uses the CMU Font with wide margins, and is suitable for most STEM related homework assignments.
-- `mla`: This makes the document conform to the MLA specifications for a research paper, including 12pt Times New Roman, 1-inch margins, an automatically generated Works Cited page, and a header in the form `Lastname Pagenumber`. 
+- `mla`: This makes the document conform to the MLA specifications for a research paper, including 12pt Times New Roman, 1-inch margins, an automatically generated Works Cited page, and a header in the form `Lastname Pagenumber`.
 
 #### Problem/Solution Options
 
@@ -109,6 +109,7 @@ You can use the template.tex as a starting point for your own homework assignmen
 |                | `amssymb`       |                             |
 |                | `amsthm`        |                             |
 |                | `mathtools`     |                             |
+| **Chemistry**  | `mhchem`        |                             |
 | **Diagrams**   | `tikz`          |                             |
 |                | `circuitikz`    | `american, siunitx`         |
 | **Code**       | `minted`        |                             |
@@ -152,3 +153,13 @@ You can use the template.tex as a starting point for your own homework assignmen
 ## License
 
 This code is distributed under the MIT license.
+
+## Change Log
+
+### v1.1
+- Updated `\part` to allow to allow an optional argument to serve as the reference label: `\part[q:1:a]` instead of `\part\label{q:1:a}`
+- Added `mhchem` package to allow for typesetting chemical equations
+- Updated version numbering
+
+### v1.0
+- Initial release

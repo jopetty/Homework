@@ -1,0 +1,139 @@
+\documentclass{homework}
+
+	% File Variables
+	\name{YOUR NAME}
+	\course{COURSE}
+
+	\assignment{\texttt{homework.cls} Overview}
+
+	\begin{document}
+		\section{Introduction}
+		This is the master document for the \texttt{homework.cls} file. It is designed to be used for any kind of STEM-related homework assignment that can be typeset, including problem sets, lab reports, and book problems in any scientific field.
+
+		\subsection{Prerequisites}
+		In order to use \texttt{homework.cls}, you must have
+		\begin{enumerate}
+			\item XeLaTeX
+			\item Python
+			\item \texttt{pygments} Python package
+			\item CMU fonts installed
+		\end{enumerate}
+
+		\subsection{Commands}
+		TL;DR: to use \texttt{homework.cls}, run the following command in your terminal:
+\begin{minted}{bash}
+xelatex -8bit -shell-escape ROOT
+\end{minted}
+		which consists of the following parts:
+		\begin{enumerate}
+			\item \texttt{xelatex}: The XeLaTeX engine
+			\item \texttt{-8bit}: Necessary for displaying syntax highlighted code if you indent your code with tabs
+			\item \texttt{-shell-escape}: Allows python code (\texttt{pygments}) to be executed during compilation
+			\item \texttt{ROOT}: the root document, with our without the \texttt{.tex} extension
+		\end{enumerate}
+
+		\section{Examples}
+		\subsection{Homework}
+		\subsubsection{Problem/Solution}
+
+		\begin{problem}
+			Identify the Schrödinger wave functions as follows:
+			\begin{align}
+				i \hbar \pdv{t}\Psi(\vb{r},t) &= \hat{H}\Psi(\vb{r},t) \\[1.5ex]
+				i \hbar \pdv{t} \Psi\qty(\vb{r},t) &= \qty[\frac{-\hbar^2}{2\mu}\laplacian + V\qty(\vb{r},t)]\Psi(\vb{r},t)
+			\end{align}
+		\end{problem}
+		\begin{solution}
+			\begin{parts}
+				\part This is a part
+				\part This is also a part
+			\end{parts}
+			The answer is obviously \(42^i\).
+			\[
+				\nu \approx \final{\tau}
+			\]
+		\end{solution}
+
+		\subsection{Physics}
+
+		\subsection{Chemistry}
+
+
+
+		\subsection{Computer Science}
+		\subsubsection{Syntax Highlighting}
+
+		Note that, if you indent your \LaTeX{} code, you must fully outdent the code to be highlighted.
+
+\begin{minted}
+[
+frame=lines,
+framesep=2mm,
+baselinestretch=1.2,
+fontsize=\footnotesize,
+linenos,
+obeytabs
+]
+{python}
+import numpy as np
+
+def incmatrix(genl1,genl2):
+    m = len(genl1)
+    n = len(genl2)
+    M = None #to become the incidence matrix
+    VT = np.zeros((n*m,1), int)  #dummy variable
+
+    # compute the bitwise xor matrix
+    # This is another comment
+    M1 = bitxormatrix(genl1)
+    M2 = np.triu(bitxormatrix(genl2),1)
+
+    for i in range(m-1):
+        for j in range(i+1, m):
+            [r,c] = np.where(M2 == M1[i,j])
+            for k in range(len(r)):
+                VT[(i)*n + r[k]] = 1;
+                VT[(i)*n + c[k]] = 1;
+                VT[(j)*n + r[k]] = 1;
+                VT[(j)*n + c[k]] = 1;
+
+                if M is None:
+                    M = np.copy(VT)
+                else:
+                    M = np.concatenate((M, VT), 1)
+
+                VT = np.zeros((n*m,1), int)
+
+    return M
+\end{minted}
+        \subsubsection{Algorithms}
+        If you don't want to use actual code in your document, let's outline some algorithms instead.
+        \begin{algorithm}
+        \caption{Euclid’s algorithm}\label{euclid}
+        \begin{algorithmic}[1]
+        \Procedure{Euclid}{$a,b$}\Comment{The g.c.d. of a and b}
+           \State $r\gets a\bmod b$
+           \While{$r\not=0$}\Comment{We have the answer if r is 0}
+              \State $a\gets b$
+              \State $b\gets r$
+              \State $r\gets a\bmod b$
+           \EndWhile\label{euclidendwhile}
+           \State \textbf{return} $b$\Comment{The gcd is b}
+        \EndProcedure
+        \end{algorithmic}
+        \end{algorithm}
+
+		\subsection{Unicode and Languages}
+
+        \texttt{homework.cls} supports native Unicode input when compiled with XeLaTeX. Just type the characters.
+
+		Praha je hlavní a současně největší město České republiky a 14.~největší město Evropské unie. Leží mírně na sever od středu Čech na řece Vltavě, uvnitř Středočeského kraje, jehož je správním centrem, ale jako samostatný kraj není jeho součástí.
+
+		Tirana është kryeqendra e qarkut dhe rrethit me të njëtin emër dhe kryeqyteti i Republikës së Shqipërisë. Tirana është kryeqendra e qarkut dhe rrethit me të njëtin emër dhe kryeqyteti i Republikës së Shqipërisë. Tirana është kryeqendra e qarkut dhe rrethit me të njëtin emër dhe kryeqyteti i Republikës së Shqipërisë.
+
+		İstanbul, Türkiye'nin en kalabalık, iktisadi ve kültürel açıdan en önemli şehri. İstanbul, Türkiye'nin en kalabalık, iktisadi ve kültürel açıdan en önemli şehri. İstanbul, Türkiye'nin en kalabalık, iktisadi ve kültürel açıdan en önemli şehri.
+
+		Москва столица Российской Федерации, город федерального значения, административный центр Центрального федерального округа и центр Московской области, в состав которой не входит. Москва столица Российской Федерации, город федерального значения, административный центр Центрального федерального округа и центр Московской области, в состав которой не входит. Москва столица Российской Федерации, город федерального значения, административный центр Центрального федерального округа и центр Московской области, в состав которой не входит.
+
+		Η Αθήνα (Ἀθῆναι στα αρχαία ελληνικά και την καθαρεύουσα) είναι η πρωτεύουσα της Ελλάδας. Επίσης είναι η έδρα της Περιφέρειας Αττικής. Η Αθήνα (Ἀθῆναι στα αρχαία ελληνικά και την καθαρεύουσα) είναι η πρωτεύουσα της Ελλάδας. Επίσης είναι η έδρα της Περιφέρειας Αττικής. Η Αθήνα (Ἀθῆναι στα αρχαία ελληνικά και την καθαρεύουσα) είναι η πρωτεύουσα της Ελλάδας. Επίσης είναι η έδρα της Περιφέρειας Αττικής.
+	\end{document}
