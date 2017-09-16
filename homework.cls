@@ -3,7 +3,7 @@
 
 % CLASS IDENTIFICATION
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{homework}[2017/03/01 v1.1.1 A LaTeX class for typesetting homework assignments]
+\ProvidesClass{homework}[2017/03/01 v1.2 A LaTeX class for typesetting homework assignments]
 
 %%%%%%%%%%%%%%%%%%%%%%%%%
 %%% CLASS DECLARATION %%%
@@ -14,6 +14,12 @@
 \RequirePackage{kvoptions}
 \RequirePackage{etoolbox}
 \RequirePackage{xparse}
+\RequirePackage{ifpdf,ifxetex,ifluatex} 
+
+%% Engine Test
+\ifxetex
+	\typeout{^^J *** XeLaTeX Mode *** ^^J}
+\fi
 
 % EVALUATE OPTIONS
 \SetupKeyvalOptions{
@@ -28,6 +34,7 @@
 \DeclareBoolOption{noboxes} % Remove boxes around Problem
 \DeclareBoolOption{grid} % Show background grid
 \DeclareBoolOption{bib} % Print an MLA bibliography from references.bib
+\DeclareBoolOption{code} % Load packages for typesetting code, requires extra flags
 
 % Options for paper style
 \newcommand{\@formatType}{pset}
@@ -46,7 +53,9 @@
 % Text
 \RequirePackage{kantlipsum}
 \RequirePackage[bookmarks=true, hidelinks]{hyperref}
-\RequirePackage{fontspec}
+\ifxetex
+	\RequirePackage{fontspec}
+\fi
 \RequirePackage{ragged2e}
 \RequirePackage{titlesec}
 
@@ -75,10 +84,12 @@
 \RequirePackage{tikz}
 \RequirePackage[american, siunitx]{circuitikz}
 
-% Code
+\ifHW@code
 \RequirePackage{minted}
 \RequirePackage{algorithm}
 \RequirePackage{algpseudocode}
+\usemintedstyle{tango}
+\fi
 
 % Formatting
 \RequirePackage{framed}
@@ -144,14 +155,20 @@
 %%% FORMATTING %%%
 %%%%%%%%%%%%%%%%%%
 % General
-\usemintedstyle{tango}
+
 
 % Fonts
 \ifdefstring{\@formatType}{pset}
 {
-	\setmainfont{CMU Serif}
+	\ifxetex
+		\setmainfont{CMU Serif}
+	\fi
 }{
-	\setmainfont{Times New Roman}
+	\ifxetex
+		\setmainfont{Times New Roman}
+	\else
+		\typeout{^^J *** This ain't gonna work *** ^^J}
+	\fi
 }
 
 % Time
@@ -275,7 +292,7 @@
 	\fi
 }{}
 
-%% Problem Environment
+% Problem Environment
 \newcounter{@problemNumber}
 \theoremstyle{definition}
 \newtheorem{@problem}{\@problemLabel}
@@ -353,11 +370,6 @@
   \
   \enumerate%
   [ label=\@partLabel,
-  %, itemsep=1pt
-  %, parsep=1pt
-  %, topsep=0pt
-  %, partopsep=100pt
-  %, labelindent=0pt
   , labelwidth=4.5em
   , labelsep=0.5em
   , resume
@@ -376,5 +388,5 @@
 
 \newcommand{\unresume}{\setcounter{enumi}{0}}
 
-%% Final
+% Final
 \newcommand{\final}[1]{\boxed{#1}}
