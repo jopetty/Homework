@@ -3,7 +3,7 @@
 
 % CLASS IDENTIFICATION
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{homework}[2017/03/01 v1.1 A LaTeX class for typesetting homework assignments]
+\ProvidesClass{homework}[2017/03/01 v1.1.1 A LaTeX class for typesetting homework assignments]
 
 %%%%%%%%%%%%%%%%%%%%%%%%%
 %%% CLASS DECLARATION %%%
@@ -353,11 +353,11 @@
   \
   \enumerate%
   [ label=\@partLabel,
-  , itemsep=1pt
-  , parsep=1pt
-  , topsep=0pt
-  , partopsep=100pt
-  , labelindent=0pt
+  %, itemsep=1pt
+  %, parsep=1pt
+  %, topsep=0pt
+  %, partopsep=100pt
+  %, labelindent=0pt
   , labelwidth=4.5em
   , labelsep=0.5em
   , resume
