@@ -82,11 +82,11 @@ You can use the template.tex as a starting point for your own homework assignmen
 
 | Option          | Description                              | Default Value |
 | --------------- | ---------------------------------------- | ------------- |
-| `\name{}`       | Your name. This will appear at the beginning of each document and, if in `mla` mode, automatically extract your last name for the header. | `YOUR NAME`   |
+| `\author{}`       | Your name. This will appear at the beginning of each document and, if in `mla` mode, automatically extract your last name for the header. | `YOUR NAME`   |
 | `\teacher{}`    | Your teacher's name. This is not used in `pset` mode. | `TEACHER`     |
 | `\course{}`     | The name of the class or course          | `COURSE`      |
 | `\due{}`        | When the assignment is due               | `\today`      |
-| `\assignment{}` | The title of the assignment              | `ASSIGNMENT`  |
+| `\title{}` | The title of the assignment              | `ASSIGNMENT`  |
 
 ### Packages Loaded
 
@@ -156,10 +156,14 @@ This code is distributed under the MIT license.
 
 ## Change Log
 
+### v1.1.1
+- Adopted semantic versioning
+- Change `v1.0` to `v0.1` to correct earlier, erroneous change to pre-1.0.0 versioning
+
 ### v1.1
 - Updated `\part` to allow to allow an optional argument to serve as the reference label: `\part[q:1:a]` instead of `\part\label{q:1:a}`
 - Added `mhchem` package to allow for typesetting chemical equations
 - Updated version numbering
 
-### v1.0
+### v0.1
 - Initial release
