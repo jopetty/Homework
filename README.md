@@ -39,12 +39,12 @@ A basic `homework` document looks something like this:
 ```latex
 \documentclass[<class-options>]{homework}
 
-\name{YOUR NAME}
+\author{YOUR NAME}
 \teacher{TEACHER}
 \course{COURSE}
 \due{\today}
 
-\assignment{ASSIGNMENT}
+\title{ASSIGNMENT}
 
 \begin{document}
 
