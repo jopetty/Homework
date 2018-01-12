@@ -1,392 +1,177 @@
-% homework.cls
-% A LaTeX class for typesetting homework assignments
+%% homework.cls
 
-% CLASS IDENTIFICATION
-\NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{homework}[2017/03/01 v1.2 A LaTeX class for typesetting homework assignments]
+\RequirePackage{expl3, xparse, ifxetex}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%
-%%% CLASS DECLARATION %%%
-%%%%%%%%%%%%%%%%%%%%%%%%%
+\ExplSyntaxOn
 
-% PACKAGES
-% Class Programming
-\RequirePackage{kvoptions}
-\RequirePackage{etoolbox}
-\RequirePackage{xparse}
-\RequirePackage{ifpdf,ifxetex,ifluatex} 
+%% Define class metadata
+\tl_const:Nn \c__homework_class_name_tl		{homework}
+\tl_const:Nn \c__homework_class_version_tl	{1.2.0}
+\tl_const:Nn \c__homework_class_date_tl		{2017/09/16}
+\tl_const:Nn \c__homework_class_description_tl	{A~LaTeX3~class~for~typesetting~homework~assignments}
+\tl_const:Nn \c__homework_class_parent_class_tl	{article}
 
-%% Engine Test
-\ifxetex
-	\typeout{^^J *** XeLaTeX Mode *** ^^J}
-\fi
+\ProvidesExplClass{\c__homework_class_name_tl}			% Class name
+		  {\c__homework_class_date_tl}			% date
+		  {\c__homework_class_version_tl}		% version
+		  {\c__homework_class_description_tl}		% description
 
-% EVALUATE OPTIONS
-\SetupKeyvalOptions{
-	family=HW,
-	prefix=HW@,
+%% Define class commands
+\RenewDocumentCommand\author{ m }	{\tl_const:Nn \g_homework_author_tl {#1}}
+\RenewDocumentCommand\title{ m }	{\tl_const:Nn \g_homework_title_tl {#1}}
+\NewDocumentCommand\due{ m }		{\tl_const:Nn \g_homework_date_tl {#1}}
+\NewDocumentCommand\course{ m }		{\tl_const:Nn \g_homework_course_tl {#1}}
+% problemlabel may need to be redefined (for psets with different parts)
+\tl_new:N	\g_homework_problemlabel_tl
+\tl_gset:Nn 	\g_homework_problemlabel_tl {Problem}
+\NewDocumentCommand\problemlabel{ m }	{\tl_gset:Nn \g_homework_problemlabel_tl {#1}}
+
+% Set default class comands so they don't error
+\tl_gset:Nn	\g_homework_author_tl	{Your~Name}
+\tl_gset:Nn	\g_homework_title_tl	{Title}
+\tl_gset:Nn \g_homework_date_tl		{\today}
+\tl_gset:Nn	\g_homework_course_tl	{Course}
+
+%% Class Options 
+% Load packages for algorithm/code typesetting
+\bool_new:N			\g_homework_loadalg_bool
+\bool_gset_false:N	\g_homework_loadalg_bool
+\DeclareOption{code}{
+	\bool_gset_true:N	\g_homework_loadalg_bool
 }
 
-\DeclareBoolOption{qed} % Display QED symbol at the end of each Solution
-\DeclareBoolOption{newpage} % Put each Problem on a new page
-\DeclareBoolOption{points} % Show points for each Problem
-\DeclareBoolOption{hidesolutions} % Only display Problem
-\DeclareBoolOption{noboxes} % Remove boxes around Problem
-\DeclareBoolOption{grid} % Show background grid
-\DeclareBoolOption{bib} % Print an MLA bibliography from references.bib
-\DeclareBoolOption{code} % Load packages for typesetting code, requires extra flags
-
-% Options for paper style
-\newcommand{\@formatType}{pset}
-\DeclareVoidOption{pset}{\renewcommand{\@formatType}{pset}}
-\DeclareVoidOption{mla}{\renewcommand{\@formatType}{mla}}
-
-\ProcessKeyvalOptions*
-
-\ifdefstring{\@formatType}{mla}
-{
-	\LoadClass[12pt]{article}
-}{
-	\LoadClass{article}
+% Load physics packages
+\bool_new:N 		\g_homework_loadphys_bool
+\bool_gset_false:N	\g_homework_loadphys_bool
+\DeclareOption{physics}{
+	\bool_gset_true:N	\g_homework_loadphys_bool
 }
 
-% Text
-\RequirePackage{kantlipsum}
-\RequirePackage[bookmarks=true, hidelinks]{hyperref}
-\ifxetex
-	\RequirePackage{fontspec}
-\fi
-\RequirePackage{ragged2e}
-\RequirePackage{titlesec}
+% Load chemistry package
+\bool_new:N			\g_homework_loadchem_bool
+\bool_gset_false:N	\g_homework_loadchem_bool
+\DeclareOption{chemistry}{
+	\bool_gset_true:N	\g_homework_loadchem_bool
+}
 
-% Tables
-\RequirePackage{array}
-\RequirePackage{tabularx}
-\RequirePackage{booktabs}
+% Load diagram packages
+\bool_new:N			\g_homework_loaddiag_bool
+\bool_gset_false:N	\g_homework_loaddiag_bool
+\DeclareOption{diagram}{
+	\bool_gset_true:N	\g_homework_loaddiag_bool
+}
 
-% Time
-\RequirePackage{datetime}
+% Font size
+\str_new:N	\g_homework_fontsize_str
+\str_gset:Nn	\g_homework_fontsize_str {11pt}
 
-% Physics
-\RequirePackage{physics}
-\RequirePackage{siunitx}
+\DeclareOption{11pt}{
+	\str_gset:Nn	\g_homework_fontsize_str {11pt}
+}
+\DeclareOption{12pt}{
+	\str_gset:Nn	\g_homework_fontsize_str {12pt}
+}
 
-% Math
+% Pass all remaining options to class
+\DeclareOption*{
+	\PassOptionsToClass{\CurrentOption}{\c__homework_class_parent_class_tl}
+}
+\ProcessOptions\relax
+
+%% Load Article Class
+\LoadClass[letterpaper, \g_homework_fontsize_str]{\c__homework_class_parent_class_tl}
+
+%% Load Module Packages
+% Formatting
+\RequirePackage{framed}
+\RequirePackage{xcolor}
+\definecolor{shadecolor}{rgb}{0.95,0.95,0.95}
+\RequirePackage{enumitem}
+
+% Math (will always be loaded)
 \RequirePackage{amsmath}
 \RequirePackage{amssymb}
 \RequirePackage{amsthm}
 \RequirePackage{mathtools}
 
+% Physics
+\bool_if:NT \g_homework_loadphys_bool{
+	\RequirePackage{physics}
+	\RequirePackage{siunitx}
+
+	% Declare some non-SI-but-still-useful units
+	\DeclareSIUnit{\mile}{mi}
+	\DeclareSIUnit{\gallon}{gallon}
+	\DeclareSIUnit{\pound}{lb}
+	\DeclareSIUnit{\foot}{ft}
+	\DeclareSIUnit{\atmosphere}{atm}
+	\DeclareSIUnit{\fahrenheit}{\degree F}
+	\DeclareSIUnit{\atom}{at}
+	\DeclareSIUnit{\molecule}{molecule}
+	\DeclareSIUnit{\calorie}{cal}
+	\DeclareSIUnit{\Calorie}{Cal}
+	\DeclareSIUnit{\inch}{in}
+}
+
+% Code/Algorithm (this requires -shell-escape -8bit flags)
+\bool_if:NT \g_homework_loadalg_bool {
+	\RequirePackage{minted}
+	\usemintedstyle{tango}
+	\RequirePackage{algorithm}
+	\RequirePackage{algpseudocode}
+}
+
 % Chemistry
-\RequirePackage{mhchem}
+\bool_if:NT	\g_homework_loadchem_bool {
+	\RequirePackage{mhchem}
+}
 
 % Diagrams
-\RequirePackage{tikz}
-\RequirePackage[american, siunitx]{circuitikz}
+\bool_if:NT	\g_homework_loaddiag_bool {
+	\RequirePackage{tikz}
+	\RequirePackage[american, siunitx]{circuitikz}
+}
 
-\ifHW@code
-\RequirePackage{minted}
-\RequirePackage{algorithm}
-\RequirePackage{algpseudocode}
-\usemintedstyle{tango}
+% Fonts (xelatex)
+\ifxetex
+	\RequirePackage{fontspec}
 \fi
 
-% Formatting
-\RequirePackage{framed}
-\RequirePackage{enumitem}
-\RequirePackage[pass]{geometry}
-\RequirePackage{fancyhdr}
-
-% CLASS VARIABLES
-\newcommand{\getlastpart}[2]{\@getlastpart#1#2 \@nil}
-\def\@getlastpart#1#2 #3\@nil{%
-	\expandafter\ifx\space#3
-		\gdef#1{#2}%
-		\expandafter\@gobble
-	\else
-		\expandafter\@firstofone
-	\fi
-	{\@getlastpart#1#3 \@nil}%
-}
-\def\name#1{\gdef\@name{#1}\getlastpart\lastname{#1}}
-
-\newcommand{\@teacher}{TEACHER}
-\newcommand{\teacher}[1]{\renewcommand{\@teacher}{#1}}
-
-\newcommand{\@course}{COURSE}
-\newcommand{\course}[1]{\renewcommand{\@course}{#1}}
-
-\newcommand{\@due}{\today}
-\newcommand{\due}[1]{\renewcommand{\@due}{#1}}
-
-\newcommand{\@assignment}{ASSIGNMENT}
-\newcommand{\assignment}[1]{\renewcommand{\@assignment}{#1}}
-
-\newcommand{\@hwType}{Homework}
-\newcommand{\hwtype}[1]{\renewcommand{\@hwType}{#1}}
-
-\newcommand{\@problemLabel}{Problem}
-\newcommand{\problemLabel}[1]{\renewcommand{\@problemLabel}{#1}}
-
-\newcommand{\@pointLabel}{point}
-\newcommand{\pointLabel}[1]{\renewcommand{\@pointLabel}{#1}}
-
-\newcommand{\@solutionLabel}{Solution}
-\newcommand{\solutionLabel}[1]{\renewcommand{\@solutionLabel}{#1}}
-
-\newcommand{\@shortTitle}{\@assignment}
-
-%%%%%%%%%%%%%
-%%% Units %%%
-%%%%%%%%%%%%%
-\DeclareSIUnit{\mile}{mi}
-\DeclareSIUnit{\gallon}{gallon}
-\DeclareSIUnit{\pound}{lb}
-\DeclareSIUnit{\foot}{ft}
-\DeclareSIUnit{\atmosphere}{atm}
-\DeclareSIUnit{\fahrenheit}{\degree F}
-\DeclareSIUnit{\atom}{at}
-\DeclareSIUnit{\molecule}{molecule}
-\DeclareSIUnit{\calorie}{cal}
-\DeclareSIUnit{\Calorie}{Cal}
-\DeclareSIUnit{\inch}{in}
-
-%%%%%%%%%%%%%%%%%%
-%%% FORMATTING %%%
-%%%%%%%%%%%%%%%%%%
-% General
-
-
-% Fonts
-\ifdefstring{\@formatType}{pset}
-{
-	\ifxetex
-		\setmainfont{CMU Serif}
-	\fi
-}{
-	\ifxetex
-		\setmainfont{Times New Roman}
-	\else
-		\typeout{^^J *** This ain't gonna work *** ^^J}
-	\fi
-}
-
-% Time
-\ifdefstring{\@formatType}{mla}
-{
-	\renewcommand{\today}{\number\day \space%
-	\ifcase \month \or January\or February\or March\or April\or May%
-	\or June\or July\or August\or September\or October\or November\or December\fi \ %
-	\number \year}
-}{}
-
-% Page Geometry
-\ifdefstring{\@formatType}{mla}
-{
-	\RaggedRight
-	\newgeometry{margin=1in}
-	\renewcommand{\baselinestretch}{2}
-	\setlength{\parindent}{.5in}
-	\setlength{\hangindent}{\parindent}
-	\setlength{\RaggedRightParindent}{0.5in}
-}{}
-
-% Title
-\ifdefstring{\@formatType}{pset}
-{
-	\if@titlepage
-		\renewcommand{\maketitle}
-		{
-		\titlepage
-		\begin{center}
-			\vspace*{1cm}
-			\Huge \@hwType\ \#\@hwnum\\
-			\vspace*{1cm}
-			\Large\@name\\
-			\vspace*{1cm}
-			\@course, \@term
-		\end{center}
-		\endtitlepage
-		}
-	\else
-		\renewcommand{\maketitle}
-		{
-		\begin{center}
-			{\hfill \@name} \\
-			{\hfill \@course} \\
-			{\hfill \@due} \\
-			\vphantom{M}
-			{\sc\large\@assignment}
-		\end{center}
-		}
-	\fi
-}{}
-\ifdefstring{\@formatType}{mla}
-{
-	\newcommand{\heading}{{\setlength{\parindent}{0cm} \@name \\ \@teacher \\ \@course \\ \@date}}
-
-	\newenvironment{tightcenter}{
-		\setlength\topsep{0pt}
-		\setlength\partopsep{0pt}
-		\setlength\parskip{0pt}
-		\begin{center}
-	}{
-		\end{center}
-	}
-
-	\renewcommand{\maketitle}{\heading\begin{tightcenter}\@assignment\end{tightcenter}}
-}{}
-\AtBeginDocument{\maketitle}
-
-% Header
-\ifdefstring{\@formatType}{mla}{
-	\def\@fancyvbox#1#2{\vbox{#2}}
-	\pagestyle{fancy}
-	\lhead{}
-	\chead{}
-	\rhead{\lastname \ \thepage}
-	\lfoot{}
-	\cfoot{}
-	\rfoot{}
-	\renewcommand{\headrulewidth}{0pt}
-	\renewcommand{\footrulewidth}{0pt}
-}{}
-
-% Sections
-\ifdefstring{\@formatType}{mla}{
-	\titleformat{\section}[hang]{\normalfont\bf\uppercase	}{}{0em}{}[]
-	\titlespacing*{\section}{0pt}{2ex plus 1ex minus .2ex}{0ex plus .2ex}
-
-	\titleformat{\subsection}[runin]{\normalfont\it}{}{0em}{}[.\enspace]
-	\titlespacing*{\subsection}{0pt}{0ex plus 1ex minus .2ex}{0ex plus .2ex}
-}{}
-
-% Bibliography
-\ifdefstring{\@formatType}{mla}{
-	\ifHW@bib
-	\RequirePackage[style=mla, backend=biber]{biblatex}
-	\RequirePackage{hyperref}
-	\usepackage{enumitem}
-	\addbibresource{references.bib}
-
-	\setlength{\partopsep}{0pt}
-	\setlength{\topsep}{0pt}
-	\setlength{\parsep}{0pt}
-
-	\defbibenvironment{bibliography}
-		{\list
-			{}
-			{\setlength{\leftmargin}{\bibhang}%
-			\setlength{\itemindent}{-\leftmargin}%
-			\setlength{\itemsep}{\bibitemsep}%
-			\setlength{\parsep}{\bibparsep}%
-			\setlength{\partopsep}{0pt}%
-			\setlength{\topsep}{0pt}}}
-		{\endlist}
-		{\item}
-
-	\defbibheading{bibliography}[Works Cited]{\newpage\begin{tightcenter}#1\end{tightcenter}}
-	\setlength\bibitemsep{0pt}
-
-	\AtEndDocument{\printbibliography}
-	\fi
-}{}
-
-% Problem Environment
-\newcounter{@problemNumber}
+%% Environments
+% Problem
+\newcounter{problemCounter}
 \theoremstyle{definition}
-\newtheorem{@problem}{\@problemLabel}
-\numberwithin{equation}{@problem}
-\newenvironment{problem}[1][]
-{
-	\stepcounter{@problemNumber}
-	\ifHW@newpage
-		\ifnum\value{@problemNumber}>1
-			\newpage
-		\fi
-	\fi
-	\notbool{HW@noboxes}{\framed\vspace{-1.5ex}}{}
-	\ifHW@points
-		\@problem
-		\def\temp{#1}\ifx\temp\empty\else
-			\ifnum#1=1
-				\textit{(#1 \@pointLabel)}
-			\else
-				\textit{(#1 \@pointsLabel)}
-			\fi
-		\fi
-	\else
-		\@problem[#1]
-	\fi
-	\pdfbookmark{\@problemLabel\ \arabic{@problem}}{prob-\arabic{@problem}}
-}
-{
-	\end@problem
-	\notbool{HW@noboxes}{\vspace{-1.5ex}\endframed}{}
-}
+\newtheorem{theoremproblem}[problemCounter]{\g_homework_problemlabel_tl}
+% \numberwithin{equation}{theoremproblem}
+\NewDocumentEnvironment{problem}
+					   {}
+					   {\begin{shaded*}\begin{theoremproblem}}
+					   {\end{theoremproblem}\end{shaded*}}
 
-% Use a custom problem number
-\newcommand{\problemnumber}[1]%
-{
-	\setcounter{@problem}{#1}
-	\addtocounter{@problem}{-1}
-}
+\NewDocumentCommand\problemnumber{ m }	{\setcounter{problemCounter}{#1 - 1}}
+\NewDocumentEnvironment{solution}
+					   {}
+					   {}
+					   {}
 
-%% Solution
-\newcommand{\@solutionTitleFormat}{\normalfont\bfseries}
-\ifHW@hidesolutions
-	\RequirePackage{comment}
-	\excludecomment{solution}
-\else
-	\newenvironment{solution}
-	{
-		\proof[\@solutionTitleFormat\@solutionLabel]%
-	}
-	{
-		\endproof
-	}
-\fi
+\NewDocumentCommand\final{ m } {\boxed{#1}}
 
-%% Parts
-\newcommand{\@partLabelDefault}{\textup{(\alph*)}}
-\newcommand{\@partLabel}{}
+\NewDocumentEnvironment{parts}
+					   {}
+					   {\begin{enumerate}[label=(\textup{\alph*}), labelwidth=4.5em, labelsep=0.5em, resume]}
+					   {\end{enumerate}}
 
-%% Define parts environment option actions
-\@namedef{partLabel@a}{\renewcommand{\@partLabel}{\textup{(\alph*)}}}
-\@namedef{partLabel@A}{\renewcommand{\@partLabel}{\textup{(\Alph*)}}}
-\@namedef{partLabel@r}{\renewcommand{\@partLabel}{\textup{(\roman*)}}}
-\@namedef{partLabel@R}{\renewcommand{\@partLabel}{\textup{(\Roman*)}}}
-\@namedef{partLabel@n}{\renewcommand{\@partLabel}{\textup{(\arabic*)}}}
-
-\newenvironment{parts}[1][a]
-{
-  \@ifundefined{partLabel@#1}
-  {
-    \@latex@error{Invalid parts environment option: #1}\@ehc
-  }
-  {
-    \@nameuse{partLabel@#1}
-  }
-  \
-  \enumerate%
-  [ label=\@partLabel,
-  , labelwidth=4.5em
-  , labelsep=0.5em
-  , resume
-  ]%
-}
-{
-  \endenumerate
-}
-
-%% \part %%
-%% Define an optional argument \part[<label>]
-%% Shorthand for \item\label{<label>}
 \def\part{\@ifnextchar[{\@with}{\@without}}
 \def\@with[#1]{\item\label{#1}}
 \def\@without{\item}
 
-\newcommand{\unresume}{\setcounter{enumi}{0}}
-
-% Final
-\newcommand{\final}[1]{\boxed{#1}}
+%% @BeginDocument
+\AtBeginDocument{
+	\begin{center}
+	{\hfill \g_homework_author_tl} \\
+	{\hfill \g_homework_course_tl} \\
+	{\hfill \g_homework_date_tl} \\
+	\vspace{0.5cm}
+	{\textsc{\large\g_homework_title_tl}} \\
+	\end{center}
+}
