@@ -29,7 +29,7 @@
 % Set default class comands so they don't error
 \tl_gset:Nn	\g_homework_author_tl	{Your~Name}
 \tl_gset:Nn	\g_homework_title_tl	{Title}
-\tl_gset:Nn \g_homework_date_tl		{\today}
+\tl_gset:Nn 	\g_homework_date_tl	{\today}
 \tl_gset:Nn	\g_homework_course_tl	{Course}
 
 %% Class Options 
@@ -48,14 +48,14 @@
 }
 
 % Load chemistry package
-\bool_new:N			\g_homework_loadchem_bool
+\bool_new:N		\g_homework_loadchem_bool
 \bool_gset_false:N	\g_homework_loadchem_bool
 \DeclareOption{chemistry}{
 	\bool_gset_true:N	\g_homework_loadchem_bool
 }
 
 % Load diagram packages
-\bool_new:N			\g_homework_loaddiag_bool
+\bool_new:N		\g_homework_loaddiag_bool
 \bool_gset_false:N	\g_homework_loaddiag_bool
 \DeclareOption{diagram}{
 	\bool_gset_true:N	\g_homework_loaddiag_bool
