@@ -14,23 +14,30 @@ There's no shortage of homework *TeX classes, but this class is designed to be:
 
 ### Prerequisites
 
-To use `homework`, you must have the following installed on your system:
-
-- `XeLaTeX`
-- `Python`
-- The `pygments` Python package
-- CMU & Times New Roman fonts
+To use `homework`, you must have, at minimum, a LaTeX distribution installed on our system. If you want to highlight source code in your LaTeX documents (like documenting `c` code, for example), you will need to install `Python` and the `pygments` python package. If you intend to compile your documents with `xelatex` and want to use a specific font, you must have that font installed on your computer. I reccomend installing the CMU fonts, which expand the default Computer Modern TeX fonts to support unicode.
 
 ### Compilation
 
 To compile `homework` documents, run the following commands in your shell:
 
-`xelatex [-shell-escape] [-8bit] ROOT`, where `ROOT` is the main `*.tex` file, with or without the extension.
+`pdflatex ROOT` or `xelatex ROOT`, where `ROOT` is the main `*.tex` file, with or without the extension.
 
-- The `-shell-escape` flag allows for `pygments` to be run while compiling the document.
-- The `-8bit` flag is necessary to correct a bug in xelatex which causes tab literals to be encoded incorrectly, which messes up code to be displayed in documents.
+If your LaTeX file contains source code to be displayed, you will need to add the `-shell-escape` flag. If you are compiling with xelatex, you will need the additional flag `-8bit` when compiling documents with formatted source code to correct a bug in xelatex which causes tab literals to be encoded correctly.
 
-These flags are required if you are going to be including syntax-highted code in your documents, and can be omitted if not.
+```bash
+# compiling with pdflatex
+pdflatex main.tex
+
+# compiling with pdflatex, using pygments to format source code
+pdflatex -shell-escape main.tex
+
+# compiling with xelatex
+xelatex main.tex
+
+# compiling with xelatex, using pygments to format source code
+xelatex -shell-escape -8bit main.tex
+ 
+```
 
 ### Usage
 
@@ -127,6 +134,7 @@ You can use the template.tex as a starting point for your own homework assignmen
 | Macro      | Usage                                    |
 | ---------- | ---------------------------------------- |
 | `\final{}` | Places a box around an answer to denote a final answer from other steps in a solution |
+| `\note{}`  | Highlights text in yellow
 
 #### Additional Units
 
@@ -155,6 +163,10 @@ You can use the template.tex as a starting point for your own homework assignmen
 This code is distributed under the MIT license.
 
 ## Change Log
+
+### v1.2.0
+- Removed `xelatex` dependency so documents can now also be compiled with `pdflatex`
+- Added default values the document macros so that compilation would not silently crash if no values were provided
 
 ### v1.1.1
 - Adopted semantic versioning
