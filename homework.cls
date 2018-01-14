@@ -21,6 +21,7 @@
 \RenewDocumentCommand\title{ m }	{\tl_const:Nn \g_homework_title_tl {#1}}
 \NewDocumentCommand\due{ m }		{\tl_const:Nn \g_homework_date_tl {#1}}
 \NewDocumentCommand\course{ m }		{\tl_const:Nn \g_homework_course_tl {#1}}
+
 % problemlabel may need to be redefined (for psets with different parts)
 \tl_new:N	\g_homework_problemlabel_tl
 \tl_gset:Nn 	\g_homework_problemlabel_tl {Problem}
@@ -34,7 +35,7 @@
 
 %% Class Options 
 % Load packages for algorithm/code typesetting
-\bool_new:N			\g_homework_loadalg_bool
+\bool_new:N		\g_homework_loadalg_bool
 \bool_gset_false:N	\g_homework_loadalg_bool
 \DeclareOption{code}{
 	\bool_gset_true:N	\g_homework_loadalg_bool
@@ -113,7 +114,7 @@
 	\DeclareSIUnit{\inch}{in}
 }
 
-% Code/Algorithm (this requires -shell-escape -8bit flags)
+% Code/Algorithm
 \bool_if:NT \g_homework_loadalg_bool {
 	\RequirePackage{minted}
 	\usemintedstyle{tango}
@@ -144,22 +145,22 @@
 \newtheorem{theoremproblem}[problemCounter]{\g_homework_problemlabel_tl}
 % \numberwithin{equation}{theoremproblem}
 \NewDocumentEnvironment{problem}
-					   {}
-					   {\begin{shaded*}\begin{theoremproblem}}
-					   {\end{theoremproblem}\end{shaded*}}
+		       {}
+		       {\begin{shaded*}\begin{theoremproblem}}
+		       {\end{theoremproblem}\end{shaded*}}
 
 \NewDocumentCommand\problemnumber{ m }	{\setcounter{problemCounter}{#1 - 1}}
 \NewDocumentEnvironment{solution}
-					   {}
-					   {}
-					   {}
+		       {}
+		       {}
+		       {}
 
 \NewDocumentCommand\final{ m } {\boxed{#1}}
 
 \NewDocumentEnvironment{parts}
-					   {}
-					   {\begin{enumerate}[label=(\textup{\alph*}), labelwidth=4.5em, labelsep=0.5em, resume]}
-					   {\end{enumerate}}
+		       {}
+		       {\begin{enumerate}[label=(\textup{\alph*}), labelwidth=4.5em, labelsep=0.5em, resume]}
+		       {\end{enumerate}}
 
 \def\part{\@ifnextchar[{\@with}{\@without}}
 \def\@with[#1]{\item\label{#1}}
