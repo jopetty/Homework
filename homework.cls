@@ -17,10 +17,20 @@
 		  {\c__homework_class_description_tl}		% description
 
 %% Define class commands
-\RenewDocumentCommand\author{ m }	{\tl_const:Nn \g_homework_author_tl {#1}}
-\RenewDocumentCommand\title{ m }	{\tl_const:Nn \g_homework_title_tl {#1}}
-\NewDocumentCommand\due{ m }		{\tl_const:Nn \g_homework_date_tl {#1}}
-\NewDocumentCommand\course{ m }		{\tl_const:Nn \g_homework_course_tl {#1}}
+\tl_new:N	\g_homework_author_tl
+\tl_new:N	\g_homework_title_tl
+\tl_new:N	\g_homework_date_tl
+\tl_new:N	\g_homework_course_tl
+
+\tl_gset:Nn	\g_homework_author_tl	{Your~name}
+\tl_gset:Nn	\g_homework_title_tl	{Title}
+\tl_gset:Nn	\g_homework_date_tl	{\today}
+\tl_gset:Nn	\g_homework_course_tl	{Course}
+
+\RenewDocumentCommand\author{ m }	{\tl_gset:Nn \g_homework_author_tl {#1}}
+\RenewDocumentCommand\title{ m }	{\tl_gset:Nn \g_homework_title_tl {#1}}
+\NewDocumentCommand\due{ m }		{\tl_gset:Nn \g_homework_date_tl {#1}}
+\NewDocumentCommand\course{ m }		{\tl_gset:Nn \g_homework_course_tl {#1}}
 
 % problemlabel may need to be redefined (for psets with different parts)
 \tl_new:N	\g_homework_problemlabel_tl
@@ -28,10 +38,10 @@
 \NewDocumentCommand\problemlabel{ m }	{\tl_gset:Nn \g_homework_problemlabel_tl {#1}}
 
 % Set default class comands so they don't error
-\tl_gset:Nn	\g_homework_author_tl	{Your~Name}
-\tl_gset:Nn	\g_homework_title_tl	{Title}
-\tl_gset:Nn 	\g_homework_date_tl	{\today}
-\tl_gset:Nn	\g_homework_course_tl	{Course}
+%\tl_gset:Nn	\g_homework_author_tl	{Your~Name}
+%\tl_gset:Nn	\g_homework_title_tl	{Title}
+%\tl_gset:Nn 	\g_homework_date_tl	{\today}
+%\tl_gset:Nn	\g_homework_course_tl	{Course}
 
 %% Class Options 
 % Load packages for algorithm/code typesetting
