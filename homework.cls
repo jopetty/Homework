@@ -76,8 +76,8 @@
 \str_new:N	\g_homework_fontsize_str
 \str_gset:Nn	\g_homework_fontsize_str {11pt}
 
-\DeclareOption{11pt}{
-	\str_gset:Nn	\g_homework_fontsize_str {11pt}
+\DeclareOption{10pt}{
+	\str_gset:Nn	\g_homework_fontsize_str {10pt}
 }
 \DeclareOption{12pt}{
 	\str_gset:Nn	\g_homework_fontsize_str {12pt}
@@ -104,6 +104,7 @@
 \RequirePackage{amssymb}
 \RequirePackage{amsthm}
 \RequirePackage{mathtools}
+\RequirePackage{bm}
 
 % Physics
 \bool_if:NT \g_homework_loadphys_bool{
@@ -122,6 +123,9 @@
 	\DeclareSIUnit{\calorie}{cal}
 	\DeclareSIUnit{\Calorie}{Cal}
 	\DeclareSIUnit{\inch}{in}
+
+	% Custom comands
+	\NewDocumentCommand\unit{ m }	{\bm{\hat{\mathbf{#1}}}}
 }
 
 % Code/Algorithm
@@ -162,14 +166,14 @@
 \NewDocumentCommand\problemnumber{ m }	{\setcounter{problemCounter}{#1 - 1}}
 \NewDocumentEnvironment{solution}
 		       {}
-		       {}
+		       {\noindent}
 		       {}
 
 \NewDocumentCommand\final{ m } {\boxed{#1}}
 
 \NewDocumentEnvironment{parts}
 		       {}
-		       {\begin{enumerate}[label=(\textup{\alph*}), labelwidth=4.5em, labelsep=0.5em, resume]}
+		       {\begin{enumerate}[label=\textup{(\alph*)}, labelwidth=4.5em, labelsep=0.5em, resume]}
 		       {\end{enumerate}}
 
 \def\part{\@ifnextchar[{\@with}{\@without}}
