@@ -37,12 +37,6 @@
 \tl_gset:Nn 	\g_homework_problemlabel_tl {Problem}
 \NewDocumentCommand\problemlabel{ m }	{\tl_gset:Nn \g_homework_problemlabel_tl {#1}}
 
-% Set default class comands so they don't error
-%\tl_gset:Nn	\g_homework_author_tl	{Your~Name}
-%\tl_gset:Nn	\g_homework_title_tl	{Title}
-%\tl_gset:Nn 	\g_homework_date_tl	{\today}
-%\tl_gset:Nn	\g_homework_course_tl	{Course}
-
 %% Class Options 
 % Load packages for algorithm/code typesetting
 \bool_new:N		\g_homework_loadalg_bool
