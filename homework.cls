@@ -100,6 +100,11 @@
 \RequirePackage{mathtools}
 \RequirePackage{bm}
 
+% Define custom shortcuts
+\NewDocumentCommand\e{}		{\mathrm{e}} % To conform to ISO 80000-2
+\NewDocumentCommand\bbr{}	{\mathbb{R}}
+\NewDocumentCommand\bbc{}	{\mathbb{C}}
+
 % Physics
 \bool_if:NT \g_homework_loadphys_bool{
 	\RequirePackage{physics}
@@ -140,6 +145,9 @@
 	\RequirePackage{tikz}
 	\RequirePackage[american, siunitx]{circuitikz}
 }
+
+%% Misc. Macros
+\NewDocumentCommand\note{ m }	{\colorbox{yellow}{#1}}
 
 % Fonts (xelatex)
 \ifxetex
