@@ -104,6 +104,8 @@
 \NewDocumentCommand\e{}		{\mathrm{e}} % To conform to ISO 80000-2
 \NewDocumentCommand\bbr{}	{\mathbb{R}}
 \NewDocumentCommand\bbc{}	{\mathbb{C}}
+\NewDocumentCommand\bbz{}	{\mathbb{Z}}
+\NewDocumentCommand\bbq{}	{\mathbb{Q}}
 
 % Physics
 \bool_if:NT \g_homework_loadphys_bool{
