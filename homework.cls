@@ -106,6 +106,7 @@
 \NewDocumentCommand\bbc{}	{\mathbb{C}}
 \NewDocumentCommand\bbz{}	{\mathbb{Z}}
 \NewDocumentCommand\bbq{}	{\mathbb{Q}}
+\NewDocumentCommand\bbn{}	{\mathbb{N}}
 
 % Physics
 \bool_if:NT \g_homework_loadphys_bool{
