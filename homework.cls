@@ -154,7 +154,7 @@
 
 % Fonts (xelatex)
 \ifxetex
-	\RequirePackage{fontspec}
+	\RequirePackage[no-math]{fontspec}
 \fi
 
 %% Environments
