@@ -162,17 +162,15 @@
 \newcounter{problemCounter}
 \theoremstyle{definition}
 \newtheorem{theoremproblem}[problemCounter]{\g_homework_problemlabel_tl}
-% \numberwithin{equation}{theoremproblem}
 \NewDocumentEnvironment{problem}
 		       {}
 		       {\begin{shaded*}\begin{theoremproblem}}
 		       {\end{theoremproblem}\end{shaded*}}
 
 \NewDocumentCommand\problemnumber{ m }	{\setcounter{problemCounter}{#1 - 1}}
-\NewDocumentEnvironment{solution}
-		       {}
-		       {\noindent}
-		       {}
+\NewDocumentEnvironment{solution}{ o }
+                       {\IfNoValueTF{#1}{\begin{proof}[Solution]}{\begin{proof}[#1]}}
+                       {\end{proof}}
 
 \NewDocumentCommand\final{ m } {\boxed{#1}}
 
