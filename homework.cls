@@ -151,6 +151,8 @@
 
 %% Misc. Macros
 \NewDocumentCommand\note{ m }	{\colorbox{yellow}{#1}}
+\NewDocumentCommand\final{ m } {\boxed{#1}}
+\RenewDocumentCommand\qedsymbol{}{$\blacksquare$}
 
 % Fonts (xelatex)
 \ifxetex
@@ -171,8 +173,6 @@
 \NewDocumentEnvironment{solution}{ o }
                        {\IfNoValueTF{#1}{\begin{proof}[Solution]}{\begin{proof}[#1]}}
                        {\end{proof}}
-
-\NewDocumentCommand\final{ m } {\boxed{#1}}
 
 \NewDocumentEnvironment{parts}
 		       {}
