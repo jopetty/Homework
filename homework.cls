@@ -11,10 +11,10 @@
 \tl_const:Nn \c__homework_class_description_tl	{A~LaTeX3~class~for~typesetting~homework~assignments}
 \tl_const:Nn \c__homework_class_parent_class_tl	{article}
 
-\ProvidesExplClass{\c__homework_class_name_tl}			% Class name
-		  {\c__homework_class_date_tl}			% date
-		  {\c__homework_class_version_tl}		% version
-		  {\c__homework_class_description_tl}		% description
+\ProvidesExplClass{\c__homework_class_name_tl}				% Class name
+                  {\c__homework_class_date_tl}				% date
+                  {\c__homework_class_version_tl}			% version
+                  {\c__homework_class_description_tl}		% description
 
 %% Define class commands
 \tl_new:N	\g_homework_author_tl
@@ -68,10 +68,10 @@
 
 % Font size
 \str_new:N	\g_homework_fontsize_str
-\str_gset:Nn	\g_homework_fontsize_str {11pt}
+\str_gset:Nn	\g_homework_fontsize_str {10pt}
 
-\DeclareOption{10pt}{
-	\str_gset:Nn	\g_homework_fontsize_str {10pt}
+\DeclareOption{11pt}{
+	\str_gset:Nn	\g_homework_fontsize_str {11pt}
 }
 \DeclareOption{12pt}{
 	\str_gset:Nn	\g_homework_fontsize_str {12pt}
