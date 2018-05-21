@@ -1,10 +1,14 @@
 %% homework.cls
+%%
+%% A LaTeX3 class for typesetting homework assignments.
 
 \RequirePackage{expl3, xparse, ifxetex}
 
 \ExplSyntaxOn
 
-%% Define class metadata
+%% MARK: Class Metadata
+%% Provides information to the LaTeX3 compiler
+%% about what our class does.
 \tl_const:Nn \c__homework_class_name_tl		{homework}
 \tl_const:Nn \c__homework_class_version_tl	{1.2.0}
 \tl_const:Nn \c__homework_class_date_tl		{2017/09/16}
@@ -16,7 +20,9 @@
                   {\c__homework_class_version_tl}			% version
                   {\c__homework_class_description_tl}		% description
 
-%% Define class commands
+%% MARK: Class Data
+%% Data set by the user about the course or assignment.
+%% Used to create title page.
 \tl_new:N	\g_homework_author_tl
 \tl_new:N	\g_homework_title_tl
 \tl_new:N	\g_homework_date_tl
@@ -101,12 +107,12 @@
 \RequirePackage{bm}
 
 % Define custom shortcuts
-\NewDocumentCommand\e{}		{\mathrm{e}} % To conform to ISO 80000-2
-\NewDocumentCommand\bbr{}	{\mathbb{R}}
-\NewDocumentCommand\bbc{}	{\mathbb{C}}
-\NewDocumentCommand\bbz{}	{\mathbb{Z}}
-\NewDocumentCommand\bbq{}	{\mathbb{Q}}
-\NewDocumentCommand\bbn{}	{\mathbb{N}}
+\NewDocumentCommand\e{}     {\mathrm{e}} % To conform to ISO 80000-2
+\NewDocumentCommand\bbr{}   {\mathbb{R}}
+\NewDocumentCommand\bbc{}   {\mathbb{C}}
+\NewDocumentCommand\bbz{}   {\mathbb{Z}}
+\NewDocumentCommand\bbq{}   {\mathbb{Q}}
+\NewDocumentCommand\bbn{}   {\mathbb{N}}
 
 % Physics
 \bool_if:NT \g_homework_loadphys_bool{
@@ -150,9 +156,9 @@
 }
 
 %% Misc. Macros
-\NewDocumentCommand\note{ m }	{\colorbox{yellow}{#1}}
+\NewDocumentCommand\note{ m } {\colorbox{yellow}{#1}}
 \NewDocumentCommand\final{ m } {\boxed{#1}}
-\RenewDocumentCommand\qedsymbol{}{$\blacksquare$}
+\RenewDocumentCommand\qedsymbol{} {$\blacksquare$}
 
 % Fonts (xelatex)
 \ifxetex
@@ -165,9 +171,9 @@
 \theoremstyle{definition}
 \newtheorem{theoremproblem}[problemCounter]{\g_homework_problemlabel_tl}
 \NewDocumentEnvironment{problem}
-		       {}
-		       {\begin{shaded*}\begin{theoremproblem}}
-		       {\end{theoremproblem}\end{shaded*}}
+		               {}
+		               {\begin{shaded*}\begin{theoremproblem}}
+		               {\end{theoremproblem}\end{shaded*}}
 
 \NewDocumentCommand\problemnumber{ m }	{\setcounter{problemCounter}{#1 - 1}}
 \NewDocumentEnvironment{solution}{ o }
