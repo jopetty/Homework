@@ -9,16 +9,16 @@
 %% MARK: Class Metadata
 %% Provides information to the LaTeX3 compiler
 %% about what our class does.
-\tl_const:Nn \c__homework_class_name_tl		{homework}
-\tl_const:Nn \c__homework_class_version_tl	{1.2.0}
-\tl_const:Nn \c__homework_class_date_tl		{2017/09/16}
-\tl_const:Nn \c__homework_class_description_tl	{A~LaTeX3~class~for~typesetting~homework~assignments}
-\tl_const:Nn \c__homework_class_parent_class_tl	{article}
+\tl_const:Nn \c__homework_class_name_tl         {homework}
+\tl_const:Nn \c__homework_class_version_tl      {1.2.0}
+\tl_const:Nn \c__homework_class_date_tl         {2017/09/16}
+\tl_const:Nn \c__homework_class_description_tl  {A~LaTeX3~class~for~typesetting~homework~assignments}
+\tl_const:Nn \c__homework_class_parent_class_tl {article}
 
-\ProvidesExplClass{\c__homework_class_name_tl}				% Class name
-                  {\c__homework_class_date_tl}				% date
-                  {\c__homework_class_version_tl}			% version
-                  {\c__homework_class_description_tl}		% description
+\ProvidesExplClass{\c__homework_class_name_tl}          % Class name
+                  {\c__homework_class_date_tl}          % date
+                  {\c__homework_class_version_tl}       % version
+                  {\c__homework_class_description_tl}   % description
 
 %% MARK: Class Data
 %% Data set by the user about the course or assignment.
@@ -94,6 +94,7 @@
 
 %% Load Module Packages
 % Formatting
+\RequirePackage[top = 1.45in, bottom = 1.35in, inner = 1.15in, outer = 2in, marginparwidth=1.4in, marginparsep=0.25in]{geometry}
 \RequirePackage{framed}
 \RequirePackage{xcolor}
 \definecolor{shadecolor}{rgb}{0.95,0.95,0.95}
@@ -113,6 +114,7 @@
 \NewDocumentCommand\bbz{}   {\mathbb{Z}}
 \NewDocumentCommand\bbq{}   {\mathbb{Q}}
 \NewDocumentCommand\bbn{}   {\mathbb{N}}
+\NewDocumentCommand\by{}    {\times}
 
 % Physics
 \bool_if:NT \g_homework_loadphys_bool{
@@ -170,8 +172,7 @@
 \newcounter{problemCounter}
 \theoremstyle{definition}
 \newtheorem{theoremproblem}[problemCounter]{\g_homework_problemlabel_tl}
-\NewDocumentEnvironment{problem}
-		               {}
+\NewDocumentEnvironment{problem}{ }
 		               {\begin{shaded*}\begin{theoremproblem}}
 		               {\end{theoremproblem}\end{shaded*}}
 
@@ -180,14 +181,15 @@
                        {\IfNoValueTF{#1}{\begin{proof}[Solution]}{\begin{proof}[#1]}}
                        {\end{proof}}
 
-\NewDocumentEnvironment{parts}
-		       {}
-		       {\begin{enumerate}[label=\textup{(\alph*)}, labelwidth=4.5em, labelsep=0.5em, resume]}
-		       {\end{enumerate}}
+% Parts environment
+\NewDocumentEnvironment{parts}{ }
+		               {\begin{enumerate}[label=\textup{(\alph*)}, labelwidth=4.5em, labelsep=0.5em, resume]}
+		               {\end{enumerate}}
 
-\def\part{\@ifnextchar[{\@with}{\@without}}
-\def\@with[#1]{\item\label{#1}}
-\def\@without{\item}
+% \part[]
+\RenewDocumentCommand\part{ o }{\IfNoValueTF{#1}
+                                            {\item}
+                                            {\item\label{#1}}}
 
 %% @BeginDocument
 \AtBeginDocument{
