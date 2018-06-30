@@ -104,6 +104,7 @@
 \RequirePackage{amsmath}
 \RequirePackage{amssymb}
 \RequirePackage{amsthm}
+\RequirePackage{thmtools}
 \RequirePackage{mathtools}
 \RequirePackage{bm}
 
@@ -167,29 +168,105 @@
 	\RequirePackage[no-math]{fontspec}
 \fi
 
-%% Environments
-% Problem
-\newcounter{problemCounter}
-\theoremstyle{definition}
-\newtheorem{theoremproblem}[problemCounter]{\g_homework_problemlabel_tl}
-\NewDocumentEnvironment{problem}{ }
-		               {\begin{shaded*}\begin{theoremproblem}}
-		               {\end{theoremproblem}\end{shaded*}}
-
-\NewDocumentCommand\problemnumber{ m }	{\setcounter{problemCounter}{#1 - 1}}
-\NewDocumentEnvironment{solution}{ o }
-                       {\IfNoValueTF{#1}{\begin{proof}[Solution]}{\begin{proof}[#1]}}
-                       {\end{proof}}
-
 % Parts environment
 \NewDocumentEnvironment{parts}{ }
-		               {\begin{enumerate}[label=\textup{(\alph*)}, labelwidth=4.5em, labelsep=0.5em, resume]}
+		               {\begin{enumerate}[label=\textup{(\alph*)},
+		                                  labelwidth=4.5em,
+		                                  labelsep=0.5em,
+		                                  leftmargin=2\parindent,
+		                                  resume]}
 		               {\end{enumerate}}
 
 % \part[]
 \RenewDocumentCommand\part{ o }{\IfNoValueTF{#1}
                                             {\item}
                                             {\item\label{#1}}}
+
+%% MARK: - Theorem-like environments
+% QED Symbol
+\RenewDocumentCommand\qedsymbol{}{$\blacksquare$}
+
+% Solution (clone of proof)
+\NewDocumentEnvironment{solution}{ o }
+                       {\IfNoValueTF{#1}{\begin{proof}[Solution]}{\begin{proof}[#1]}}
+                       {\end{proof}}
+
+% Make shaded theorems have uniform padding
+\NewDocumentCommand\headpadding{}{\leftskip=0.2cm\rightskip=0.2cm\vspace{0.4cm}}
+\NewDocumentCommand\footpadding{}{\vspace{0.2cm}}
+\NewDocumentCommand\theoremvert{}{6pt}
+
+% Lemma style definition
+\declaretheoremstyle[
+	spaceabove=\theoremvert, spacebelow=\theoremvert,
+	headfont=\normalfont\bfseries,
+	bodyfont=\normalfont\itshape
+]{lemma}
+
+\declaretheorem[style=lemma]{lemma}
+\declaretheorem[style=lemma]{theorem}
+\declaretheorem[style=lemma]{corollary}
+\declaretheorem[style=lemma]{conjecture}
+
+% Definition style theorems
+\declaretheoremstyle[
+	spaceabove=\theoremvert, spacebelow=\theoremvert,
+	headfont=\normalfont\bfseries,
+	bodyfont=\normalfont
+]{definition}
+
+\declaretheorem[
+	style=definition,
+	postheadhook=\leftskip=1cm\rightskip=1cm
+]{definition}
+\declaretheorem[
+	style=definition,
+	postheadhook=\leftskip=1cm\rightskip=1cm,
+	numbered=no
+]{notation}
+\declaretheorem[
+	style=definition,
+	postheadhook=\leftskip=1cm\rightskip=1cm,
+	title={Abuse~of~notation},
+	numbered=no
+]{abuse}
+\declaretheorem[
+	shaded={bgcolor={rgb}{0.95,0.95,0.95}},
+	style=definition,
+	postheadhook=\headpadding,
+	postfoothook=\footpadding
+]{problem}
+\declaretheorem[
+	shaded={bgcolor={rgb}{0.95,0.95,0.95}},
+	style=definition,
+	postheadhook=\headpadding,
+	postfoothook=\footpadding,
+	sibling=problem
+]{exercise}
+
+% Break style theorems
+\declaretheoremstyle[
+	spaceabove=\theoremvert, spacebelow=\theoremvert,
+	headfont=\normalfont\bfseries,
+	bodyfont=\normalfont,
+	postheadspace=\newline
+]{break}
+
+\declaretheorem[
+	shaded={bgcolor={rgb}{1,0.93,0.8}},
+	style=break,
+	postheadhook=\headpadding,
+	postfoothook=\footpadding
+]{example}
+
+%% Languages
+% Arabic
+\ifxetex
+	\RequirePackage{bidi}
+	\newfontfamily\arabicbody[Script=Arabic]{Scheherazade}
+	\NewDocumentCommand\arab{}{\RTL\arabicbody}
+	\NewDocumentCommand\arabtext{ m }{{\RTL\arabicbody #1}}
+\fi
 
 %% @BeginDocument
 \AtBeginDocument{
